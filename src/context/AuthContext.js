@@ -1,60 +1,60 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
+import { loginUser, registerUser, fetchMe } from "../services/api";
 
 const AuthContext = createContext(null);
 
-const MOCK_USER = {
-  id: "user-001",
-  name: "Alex Johnson",
-  email: "alex@example.com",
-  password: "demo123",
-};
-
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function restoreSession() {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const res = await fetchMe();
+        setUser(res.user);
+      } catch {
+        localStorage.removeItem("token");
+      } finally {
+        setLoading(false);
+      }
+    }
+    restoreSession();
+  }, []);
 
   async function login(email, password) {
-    await new Promise((resolve) => setTimeout(resolve, 600));
-
-    if (email === MOCK_USER.email && password === MOCK_USER.password) {
-      const { password: _, ...safeUser } = MOCK_USER;
-      setUser(safeUser);
-      return { success: true };
-    }
-    return { success: false, error: "Invalid email or password." };
+    const res = await loginUser(email, password);
+    localStorage.setItem("token", res.token);
+    setUser(res.user);
+    return res;
   }
 
   async function register(name, email, password) {
-    await new Promise((resolve) => setTimeout(resolve, 600));
-
-    if (!name || !email || !password) {
-      return { success: false, error: "All fields are required." };
-    }
-    if (password.length < 6) {
-      return {
-        success: false,
-        error: "Password must be at least 6 characters.",
-      };
-    }
-
-    setUser({ id: "user-new", name, email });
-    return { success: true };
+    const res = await registerUser(name, email, password);
+    localStorage.setItem("token", res.token);
+    setUser(res.user);
+    return res;
   }
 
   function logout() {
+    localStorage.removeItem("token");
     setUser(null);
   }
 
   return (
-    <AuthContext.Provider value={{ user, login, register, logout }}>
+    <AuthContext.Provider value={{ user, loading, login, register, logout }}>
       {children}
     </AuthContext.Provider>
   );
 }
 
 export function useAuth() {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error("useAuth must be used inside an <AuthProvider>");
-  }
-  return context;
+  const ctx = useContext(AuthContext);
+  if (!ctx) throw new Error("useAuth must be used inside <AuthProvider>");
+  return ctx;
 }
