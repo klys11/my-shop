@@ -1,9 +1,17 @@
-import { NavLink, Link } from "react-router-dom";
+import { NavLink, Link, useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext.jsx";
+import { useAuth } from "../context/AuthContext.jsx";
 import "./Navbar.css";
 
 export default function Navbar() {
   const { cartCount } = useCart();
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+
+  function handleLogout() {
+    logout();
+    navigate("/");
+  }
 
   return (
     <header className="navbar">
@@ -43,9 +51,25 @@ export default function Navbar() {
             />
           </div>
 
-          <Link to="/login" className="nav-icon-btn" title="Account">
-            👤
-          </Link>
+          {/* Show user name + logout if logged in, otherwise show login link */}
+          {user ? (
+            <div className="navbar-user">
+              <span className="navbar-user-name">
+                Hi, {user.name.split(" ")[0]}
+              </span>
+              <button
+                onClick={handleLogout}
+                className="btn btn-secondary btn-sm"
+              >
+                Log out
+              </button>
+            </div>
+          ) : (
+            <Link to="/login" className="nav-icon-btn" title="Account">
+              👤
+            </Link>
+          )}
+
           <button className="nav-icon-btn" title="Wishlist">
             🤍
           </button>
