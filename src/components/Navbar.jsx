@@ -42,15 +42,6 @@ export default function Navbar() {
         </nav>
 
         <div className="navbar-actions">
-          <div className="navbar-search">
-            <span className="search-icon">🔍</span>
-            <input
-              type="text"
-              placeholder="Search products…"
-              className="search-input"
-            />
-          </div>
-
           {user ? (
             <div className="navbar-user">
               <span className="navbar-user-name">
