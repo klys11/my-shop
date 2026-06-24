@@ -6,8 +6,7 @@ export default function Footer() {
     <footer className="footer">
       <div className="footer-inner container">
         <div className="footer-brand">
-          <span className="footer-logo">ShopLite</span>
-          <p>A clean, modern shop built with React.</p>
+          <span className="footer-logo">Etrade</span>
         </div>
 
         <nav className="footer-links">
@@ -18,7 +17,7 @@ export default function Footer() {
         </nav>
 
         <p className="footer-copy">
-          © {new Date().getFullYear()} ShopLite · Demo only
+          © {new Date().getFullYear()} Etrade · Demo only
         </p>
       </div>
     </footer>
