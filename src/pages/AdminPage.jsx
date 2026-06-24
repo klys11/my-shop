@@ -302,7 +302,7 @@ export default function AdminPage() {
                       <tr key={p.id}>
                         <td>
                           <img
-                            src={`/src/assets/products/${p.image}`}
+                            src={`/images/${p.image}`}
                             alt={p.name}
                             className="admin-product-img"
                           />

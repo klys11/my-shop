@@ -20,7 +20,7 @@ function Stars({ rating, reviews }) {
 }
 
 function productImage(filename) {
-  return `/src/assets/products/${filename}`;
+  return `/images/${filename}`;
 }
 
 export default function ProductDetailPage() {

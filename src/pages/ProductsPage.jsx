@@ -1,7 +1,26 @@
-import { useState, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { PRODUCTS, CATEGORIES } from "../data/products";
+import { fetchProducts } from "../services/api";
 import "./ProductsPage.css";
+
+const CATEGORIES = [
+  { name: "All", icon: "🛍️" },
+  { name: "Audio", icon: "🎧" },
+  { name: "Gaming", icon: "🎮" },
+  { name: "Accessories", icon: "⌨️" },
+  { name: "Laptops", icon: "💻" },
+  { name: "Monitors", icon: "🖥️" },
+  { name: "Networking", icon: "📡" },
+  { name: "PC Gaming", icon: "🖱️" },
+];
+
+const SORT_OPTIONS = [
+  { value: "default", label: "Featured" },
+  { value: "price-asc", label: "Price: Low → High" },
+  { value: "price-desc", label: "Price: High → Low" },
+  { value: "rating", label: "Top Rated" },
+  { value: "reviews", label: "Most Reviewed" },
+];
 
 function Stars({ rating, reviews }) {
   const full = Math.floor(rating);
@@ -22,7 +41,11 @@ function ProductCard({ product }) {
     <Link to={`/products/${product.id}`} className="product-card">
       {product.badge && <span className="product-badge">{product.badge}</span>}
       <div className="product-card-image">
-        <img src={product.image} alt={product.name} className="product-img" />
+        <img
+          src={`/images/${product.image}`}
+          alt={product.name}
+          className="product-img"
+        />
       </div>
       <div className="product-card-body">
         <p className="product-card-category">{product.category}</p>
@@ -39,50 +62,40 @@ function ProductCard({ product }) {
   );
 }
 
-const SORT_OPTIONS = [
-  { value: "default", label: "Featured" },
-  { value: "price-asc", label: "Price: Low → High" },
-  { value: "price-desc", label: "Price: High → Low" },
-  { value: "rating", label: "Top Rated" },
-  { value: "reviews", label: "Most Reviewed" },
-];
-
 export default function ProductsPage() {
   const [searchParams, setSearchParams] = useSearchParams();
-
   const category = searchParams.get("category") || "All";
 
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("default");
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    async function load() {
+      setLoading(true);
+      setError(null);
+      try {
+        const res = await fetchProducts({
+          category: category === "All" ? "" : category,
+          search,
+          sort: sort === "default" ? "" : sort,
+        });
+        setProducts(res.data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+    load();
+  }, [category, search, sort]);
 
   function handleCategory(cat) {
-    if (cat === "All") {
-      setSearchParams({});
-    } else {
-      setSearchParams({ category: cat });
-    }
+    if (cat === "All") setSearchParams({});
+    else setSearchParams({ category: cat });
   }
-
-  const filtered = useMemo(() => {
-    let result = PRODUCTS.filter((p) => {
-      const matchesCategory = category === "All" || p.category === category;
-      const matchesSearch = p.name.toLowerCase().includes(search.toLowerCase());
-      return matchesCategory && matchesSearch;
-    });
-
-    switch (sort) {
-      case "price-asc":
-        return [...result].sort((a, b) => a.price - b.price);
-      case "price-desc":
-        return [...result].sort((a, b) => b.price - a.price);
-      case "rating":
-        return [...result].sort((a, b) => b.rating - a.rating);
-      case "reviews":
-        return [...result].sort((a, b) => b.reviews - a.reviews);
-      default:
-        return result;
-    }
-  }, [search, category, sort]);
 
   return (
     <div className="products-page page">
@@ -90,7 +103,9 @@ export default function ProductsPage() {
         <div>
           <h1 className="products-page-title">All Products</h1>
           <p className="products-page-sub">
-            {filtered.length} product{filtered.length !== 1 ? "s" : ""} found
+            {loading
+              ? "Loading…"
+              : `${products.length} product${products.length !== 1 ? "s" : ""} found`}
           </p>
         </div>
         <div className="products-toolbar">
@@ -135,7 +150,21 @@ export default function ProductsPage() {
         ))}
       </div>
 
-      {filtered.length === 0 ? (
+      {loading && (
+        <div className="products-loading">
+          {[...Array(8)].map((_, i) => (
+            <div key={i} className="product-skeleton" />
+          ))}
+        </div>
+      )}
+
+      {error && !loading && (
+        <div className="alert alert-error" style={{ marginBottom: 24 }}>
+          ⚠️ Could not load products: {error}
+        </div>
+      )}
+
+      {!loading && !error && products.length === 0 && (
         <div className="empty-state">
           <div className="empty-state-icon">🔍</div>
           <h3>No products found</h3>
@@ -150,9 +179,11 @@ export default function ProductsPage() {
             Clear filters
           </button>
         </div>
-      ) : (
+      )}
+
+      {!loading && !error && products.length > 0 && (
         <div className="products-grid-page">
-          {filtered.map((p) => (
+          {products.map((p) => (
             <ProductCard key={p.id} product={p} />
           ))}
         </div>

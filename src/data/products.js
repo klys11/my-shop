@@ -1,12 +1,3 @@
-import airbudsImg from "../assets/products/airbuds.png";
-import controllerImg from "../assets/products/controller.png";
-import headphonesImg from "../assets/products/headphones.png";
-import keyboardImg from "../assets/products/keyboard.png";
-import laptopStandImg from "../assets/products/laptop-stand.png";
-import mouseImg from "../assets/products/mouse.png";
-import speakerImg from "../assets/products/speaker.png";
-import webcamImg from "../assets/products/webcam.png";
-
 export const PRODUCTS = [
   {
     id: 1,
@@ -16,7 +7,7 @@ export const PRODUCTS = [
     category: "Audio",
     rating: 4.8,
     reviews: 342,
-    image: headphonesImg,
+    image: "headphones.png",
     badge: "Best Seller",
     stock: 14,
     desc: "Premium over-ear headphones with 40h battery, active noise cancellation, and Hi-Res audio. USB-C fast charge.",
@@ -30,7 +21,7 @@ export const PRODUCTS = [
     category: "Gaming",
     rating: 4.6,
     reviews: 215,
-    image: controllerImg,
+    image: "controller.png",
     badge: "20% Off",
     stock: 22,
     desc: "Wireless controller with haptic feedback, RGB lighting, 20h battery. Compatible with PC and consoles.",
@@ -43,7 +34,7 @@ export const PRODUCTS = [
     category: "Accessories",
     rating: 4.7,
     reviews: 178,
-    image: keyboardImg,
+    image: "keyboard.png",
     badge: "New",
     stock: 30,
     desc: "TKL layout, hot-swap switches, per-key RGB, aluminium frame. USB-C detachable cable.",
@@ -56,7 +47,7 @@ export const PRODUCTS = [
     category: "Accessories",
     rating: 4.5,
     reviews: 134,
-    image: webcamImg,
+    image: "webcam.png",
     badge: "25% Off",
     stock: 18,
     desc: "4K 30fps, built-in ring light, auto white balance, dual noise-cancelling mics. Plug & play.",
@@ -69,7 +60,7 @@ export const PRODUCTS = [
     category: "Audio",
     rating: 4.7,
     reviews: 290,
-    image: speakerImg,
+    image: "speaker.png",
     badge: null,
     stock: 25,
     desc: "360° sound, IPX7 waterproof, 24h battery, built-in mic for calls. Pairs with two devices.",
@@ -82,7 +73,7 @@ export const PRODUCTS = [
     category: "Audio",
     rating: 4.6,
     reviews: 401,
-    image: airbudsImg,
+    image: "airbuds.png",
     badge: "33% Off",
     stock: 40,
     desc: "Active noise cancellation, transparency mode, 6h + 24h case, IPX5, wireless charging case.",
@@ -95,7 +86,7 @@ export const PRODUCTS = [
     category: "Gaming",
     rating: 4.7,
     reviews: 388,
-    image: mouseImg,
+    image: "mouse.png",
     badge: "New",
     stock: 35,
     desc: "25,600 DPI optical sensor, 8 programmable buttons, 70h battery, RGB, 80g ultra-light.",
@@ -108,7 +99,7 @@ export const PRODUCTS = [
     category: "Accessories",
     rating: 4.8,
     reviews: 523,
-    image: laptopStandImg,
+    image: "laptop-stand.png",
     badge: null,
     stock: 60,
     desc: 'Adjustable 6-angle aluminium stand. Fits 10–17" laptops. Foldable, 800g carry weight.',
