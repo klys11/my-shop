@@ -11,6 +11,7 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import CheckoutPage from "./pages/CheckoutPage";
 import OrderConfirmationPage from "./pages/OrderConfirmationPage";
+import AdminPage from "./pages/AdminPage";
 import NotFoundPage from "./pages/NotFoundPage";
 
 export default function App() {
@@ -31,6 +32,7 @@ export default function App() {
                 path="order-confirmation"
                 element={<OrderConfirmationPage />}
               />
+              <Route path="admin" element={<AdminPage />} />
               <Route path="*" element={<NotFoundPage />} />
             </Route>
           </Routes>

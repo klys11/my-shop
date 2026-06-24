@@ -47,3 +47,21 @@ export const createOrder = (items, shippingAddress) =>
   });
 
 export const fetchOrderById = (id) => request(`/orders/${id}`);
+
+export const fetchAdminStats = () => request("/admin/stats");
+export const fetchAdminProducts = () => request("/admin/products");
+export const fetchAdminOrders = () => request("/admin/orders");
+export const adminCreateProduct = (data) =>
+  request("/admin/products", { method: "POST", body: JSON.stringify(data) });
+export const adminUpdateProduct = (id, data) =>
+  request(`/admin/products/${id}`, {
+    method: "PUT",
+    body: JSON.stringify(data),
+  });
+export const adminDeleteProduct = (id) =>
+  request(`/admin/products/${id}`, { method: "DELETE" });
+export const adminUpdateOrderStatus = (id, status) =>
+  request(`/admin/orders/${id}/status`, {
+    method: "PUT",
+    body: JSON.stringify({ status }),
+  });
