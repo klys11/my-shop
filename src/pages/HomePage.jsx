@@ -1,6 +1,18 @@
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { PRODUCTS, CATEGORIES, FEATURED_PRODUCT } from "../data/products";
+import { fetchProducts } from "../services/api";
 import "./HomePage.css";
+
+const CATEGORIES = [
+  { name: "All", icon: "🛍️" },
+  { name: "Audio", icon: "🎧" },
+  { name: "Gaming", icon: "🎮" },
+  { name: "Accessories", icon: "⌨️" },
+  { name: "Laptops", icon: "💻" },
+  { name: "Monitors", icon: "🖥️" },
+  { name: "Networking", icon: "📡" },
+  { name: "PC Gaming", icon: "🖱️" },
+];
 
 function Stars({ rating, reviews }) {
   const full = Math.floor(rating);
@@ -16,12 +28,20 @@ function Stars({ rating, reviews }) {
   );
 }
 
+function productImage(filename) {
+  return `/src/assets/products/${filename}`;
+}
+
 function ProductCard({ product }) {
   return (
     <Link to={`/products/${product.id}`} className="product-card">
       {product.badge && <span className="product-badge">{product.badge}</span>}
       <div className="product-card-image">
-        <img src={product.image} alt={product.name} className="product-img" />
+        <img
+          src={productImage(product.image)}
+          alt={product.name}
+          className="product-img"
+        />
       </div>
       <div className="product-card-body">
         <p className="product-card-category">{product.category}</p>
@@ -39,49 +59,68 @@ function ProductCard({ product }) {
 }
 
 export default function HomePage() {
-  const featuredProducts = PRODUCTS.slice(0, 8);
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchProducts()
+      .then((res) => setProducts(res.data))
+      .catch(console.error)
+      .finally(() => setLoading(false));
+  }, []);
+
+  const featured = products[0];
+  const grid = products.slice(0, 8);
 
   return (
     <div className="home">
-      {/* ── HERO ── */}
       <section className="hero">
         <div className="hero-inner container">
           <div className="hero-text">
             <span className="hero-tag">Best of the Week</span>
-            <h1 className="hero-title">{FEATURED_PRODUCT.name}</h1>
-            <Stars
-              rating={FEATURED_PRODUCT.rating}
-              reviews={FEATURED_PRODUCT.reviews}
-            />
-            <div className="hero-price-row">
-              <span className="hero-price">${FEATURED_PRODUCT.price}</span>
-              {FEATURED_PRODUCT.oldPrice && (
-                <span className="hero-price-old">
-                  ${FEATURED_PRODUCT.oldPrice}
-                </span>
-              )}
-            </div>
-            <Link
-              to={`/products/${FEATURED_PRODUCT.id}`}
-              className="btn btn-primary btn-lg hero-cta"
-            >
-              Shop Now
-            </Link>
+            <h1 className="hero-title">
+              {featured ? featured.name : "Loading…"}
+            </h1>
+            {featured && (
+              <Stars rating={featured.rating} reviews={featured.reviews} />
+            )}
+            {featured && (
+              <div className="hero-price-row">
+                <span className="hero-price">${featured.price}</span>
+                {featured.oldPrice && (
+                  <span className="hero-price-old">${featured.oldPrice}</span>
+                )}
+              </div>
+            )}
+            {featured && (
+              <Link
+                to={`/products/${featured.id}`}
+                className="btn btn-primary btn-lg hero-cta"
+              >
+                Shop Now
+              </Link>
+            )}
           </div>
 
           <div className="hero-visual">
             <div className="hero-glow" />
-            <img
-              src={FEATURED_PRODUCT.image}
-              alt={FEATURED_PRODUCT.name}
-              className="hero-product-img"
-            />
+            {featured && (
+              <img
+                src={productImage(featured.image)}
+                alt={featured.name}
+                className="hero-product-img"
+              />
+            )}
           </div>
 
           <div className="hero-sidebar">
-            {PRODUCTS.slice(1, 4).map((p) => (
+            {products.slice(1, 4).map((p) => (
               <Link to={`/products/${p.id}`} key={p.id} className="hero-pill">
-                <img src={p.image} alt={p.name} className="hero-pill-img" />
+                <img
+                  src={productImage(p.image)}
+                  alt={p.name}
+                  className="hero-pill-img"
+                />
                 <div>
                   <p className="hero-pill-name">{p.name}</p>
                   <p className="hero-pill-price">${p.price}</p>
@@ -127,11 +166,19 @@ export default function HomePage() {
               View all →
             </Link>
           </div>
-          <div className="products-grid">
-            {featuredProducts.map((p) => (
-              <ProductCard key={p.id} product={p} />
-            ))}
-          </div>
+          {loading ? (
+            <div className="products-loading">
+              {[...Array(8)].map((_, i) => (
+                <div key={i} className="product-skeleton" />
+              ))}
+            </div>
+          ) : (
+            <div className="products-grid">
+              {grid.map((p) => (
+                <ProductCard key={p.id} product={p} />
+              ))}
+            </div>
+          )}
         </div>
       </section>
     </div>
