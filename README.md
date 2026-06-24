@@ -10,10 +10,10 @@ A modern e-commerce web application built with React, Node.js, Express, and Post
 
 ## Screenshots
 
-![Homepage](public/screenshots/homepage.png)
-![Product Detail](public/screenshots/product.png)
-![Cart](public/screenshots/cart.png)
-![Admin Panel](public/screenshots/admin.png)
+![Homepage](screenshots/homepage.png)
+![Product Detail](screenshots/product.png)
+![Cart](screenshots/cart.png)
+![Admin Panel](screenshots/admin.png)
 
 ## Features
 
