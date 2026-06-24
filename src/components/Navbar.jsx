@@ -51,12 +51,16 @@ export default function Navbar() {
             />
           </div>
 
-          {/* Show user name + logout if logged in, otherwise show login link */}
           {user ? (
             <div className="navbar-user">
               <span className="navbar-user-name">
                 Hi, {user.name.split(" ")[0]}
               </span>
+              {user.role === "admin" && (
+                <Link to="/admin" className="btn btn-secondary btn-sm">
+                  Admin
+                </Link>
+              )}
               <button
                 onClick={handleLogout}
                 className="btn btn-secondary btn-sm"

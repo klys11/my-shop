@@ -55,6 +55,7 @@ export default function ProductDetailPage() {
     }
     load();
   }, [id]);
+
   if (loading) {
     return (
       <div className="detail-page page">
@@ -107,7 +108,11 @@ export default function ProductDetailPage() {
     : null;
 
   function handleAddToCart() {
-    dispatch({ type: "ADD", product, qty });
+    dispatch({
+      type: "ADD",
+      product: { ...product, image: productImage(product.image) },
+      qty,
+    });
     setAdded(true);
     setTimeout(() => setAdded(false), 1800);
   }
@@ -118,7 +123,6 @@ export default function ProductDetailPage() {
 
   return (
     <div className="detail-page page">
-      {/* Breadcrumb */}
       <nav className="breadcrumb">
         <Link to="/">Home</Link>
         <span className="breadcrumb-sep">›</span>

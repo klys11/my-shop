@@ -1,5 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useCart } from "../context/CartContext";
+import { useCart } from "../context/CartContext.jsx";
+import { useAuth } from "../context/AuthContext.jsx";
 import "./CartPage.css";
 
 function CartItem({ item }) {
@@ -54,6 +55,7 @@ function CartItem({ item }) {
 export default function CartPage() {
   const { cart, cartCount, cartSubtotal, shipping, cartTotal, dispatch } =
     useCart();
+  const { user } = useAuth();
   const navigate = useNavigate();
 
   if (cart.length === 0) {
@@ -82,7 +84,6 @@ export default function CartPage() {
 
       <div className="cart-layout">
         <div className="cart-items">
-          {/* Column headers */}
           <div className="cart-cols-header">
             <span>Product</span>
             <span>Quantity</span>
@@ -148,11 +149,15 @@ export default function CartPage() {
             </div>
 
             <button
-              onClick={() => navigate("/checkout")}
+              onClick={() =>
+                user
+                  ? navigate("/checkout")
+                  : navigate("/login", { state: { from: "/checkout" } })
+              }
               className="btn btn-primary btn-full btn-lg"
               style={{ marginTop: 20 }}
             >
-              Proceed to checkout →
+              {user ? "Proceed to checkout →" : "Log in to checkout →"}
             </button>
 
             <div className="summary-trust">
