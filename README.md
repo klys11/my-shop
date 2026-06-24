@@ -1,16 +1,112 @@
-# React + Vite
+# eTrade — Full Stack E-commerce App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern e-commerce web application built with React, Node.js, Express, and PostgreSQL.
 
-Currently, two official plugins are available:
+![React](https://img.shields.io/badge/React-19-blue) ![Node.js](https://img.shields.io/badge/Node.js-Express-green) ![PostgreSQL](https://img.shields.io/badge/Database-PostgreSQL-blue) ![Prisma](https://img.shields.io/badge/ORM-Prisma-lightgrey)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Live Demo
 
-## React Compiler
+[etrade-shop.netlify.app](https://etrade-shop.netlify.app)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Screenshots
 
-## Expanding the ESLint configuration
+![Homepage](public/screenshots/homepage.png)
+![Product Detail](public/screenshots/product.png)
+![Cart](public/screenshots/cart.png)
+![Admin Panel](public/screenshots/admin.png)
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Features
+
+- Browse products with search, category filter, and sort
+- Product detail page with related products
+- Shopping cart with quantity controls and free shipping indicator
+- User registration and login with JWT authentication
+- Multi-step checkout flow with shipping address
+- Order confirmation page
+- Admin panel for managing products and orders
+- Fully responsive design
+
+## Tech Stack
+
+| Layer      | Technology                             |
+| ---------- | -------------------------------------- |
+| Frontend   | React 19, React Router v6, Context API |
+| Styling    | CSS with custom design tokens          |
+| Backend    | Node.js, Express                       |
+| Database   | PostgreSQL with Prisma ORM             |
+| Auth       | JWT tokens, bcrypt password hashing    |
+| Build tool | Vite                                   |
+| Deployment | Netlify (frontend), Railway (backend)  |
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js 18+
+- The backend API running (see [my-shop-backend](https://github.com/klys11/my-shop-backend))
+
+### Installation
+
+1. Clone the repository
+
+```bash
+git clone https://github.com/klys11/my-shop.git
+cd my-shop
+```
+
+2. Install dependencies
+
+```bash
+npm install
+```
+
+3. Create a `.env` file in the root folder
+
+```
+VITE_API_URL=http://localhost:4000/api
+```
+
+4. Start the development server
+
+```bash
+npm run dev
+```
+
+The app will be available at `http://localhost:5173`
+
+## Project Structure
+
+```
+public/
+└── images/         # Product images (PNG files)
+src/
+├── components/     # Reusable UI components (Navbar, Footer, Layout)
+├── context/        # Global state (CartContext, AuthContext)
+├── pages/          # One file per page
+├── services/       # API calls (api.js)
+└── styles/         # Global CSS and design tokens
+```
+
+## Pages
+
+| Route                 | Page                                       |
+| --------------------- | ------------------------------------------ |
+| `/`                   | Home — hero, categories, featured products |
+| `/products`           | Product catalogue with search and filters  |
+| `/products/:id`       | Product detail page                        |
+| `/cart`               | Shopping cart                              |
+| `/login`              | Login                                      |
+| `/register`           | Register                                   |
+| `/checkout`           | Multi-step checkout                        |
+| `/order-confirmation` | Order confirmation                         |
+| `/admin`              | Admin panel (admin only)                   |
+
+## Demo Credentials
+
+| Role  | Email            | Password |
+| ----- | ---------------- | -------- |
+| Admin | admin@etrade.com | admin123 |
+
+## Backend
+
+[github.com/klys11/my-shop-backend](https://github.com/klys11/my-shop-backend)
