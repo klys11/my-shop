@@ -1,0 +1,28 @@
+/* src/components/ScrollToTop.css */
+
+.scroll-to-top {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--indigo);
+  color: #fff;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  box-shadow: var(--shadow-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    background 0.15s,
+    transform 0.15s;
+  z-index: 99;
+}
+
+.scroll-to-top:hover {
+  background: var(--indigo-dark);
+  transform: translateY(-3px);
+}
